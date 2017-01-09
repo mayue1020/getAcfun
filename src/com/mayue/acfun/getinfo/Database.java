@@ -7,9 +7,10 @@ public class Database {
 	private static String PASSWORD = "Mrma88888888";
 	private static String databese;
 	private static String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String URL = "jdbc:sqlserver://simpleme.cc:1433;databaseName=acfun";
-	private static Connection conn = null;
-    
+    private static String URL = "jdbc:sqlserver://192.168.2.222:1433;databaseName=acfun";
+
+
+	
     static {  
         try {  
             // 加载驱动  
@@ -19,42 +20,56 @@ public class Database {
             e.printStackTrace();  
         }  
     }  
-    
-    public Connection getConn(String SQL) throws SQLException {  
+	private static Connection conn = null;
+	
+    public Connection getConn() throws SQLException {  
         conn = null;  
-        System.out.println("开始连接数据库");  
+//        System.out.println("开始连接数据库");  
         try{  
             conn=DriverManager.getConnection(URL, USERNAME, PASSWORD);  
         }catch(SQLException e){  
             e.printStackTrace();  
             System.out.println("数据库连接失败！");  
         }  
-        System.out.println("数据库连接成功");  
-        
-//        PreparedStatement pstmt;
-//        pstmt = conn.prepareStatement(SQL);
-//        int i = 0;
-//        i = pstmt.executeUpdate();
-//        System.out.println("resutl: " + i);
-//        pstmt.close();
+//        System.out.println("数据库连接成功");  
 
         return conn;  
     }
     
-    public void putSQL(String SQL) throws SQLException {
-    	getConn(SQL);
-        PreparedStatement pstmt;
+
+
+    public String putSQL(String SQL) throws SQLException {
+    	PreparedStatement pstmt = null;
         try{
-            pstmt = conn.prepareStatement(SQL);
-            int i = 0;
-            i = pstmt.executeUpdate();
-            System.out.println("resutl: " + i);
-            pstmt.close();
-            getConn(SQL).close();
-        }
+        	int i = 0;
+        	getConn();
+//            for(i = 0;i!=0;){
+        	
+        		pstmt = conn.prepareStatement(SQL);
+                pstmt.executeUpdate();
+                pstmt.close();
+//            }
+
+//            do{
+//            	PreparedStatement pstmt;
+//                pstmt = conn.prepareStatement(SQL);
+//                i = pstmt.executeUpdate();
+//                pstmt.close();
+//            }
+//            while(i == 0);
+//          int i = 0;
+//          i = pstmt.executeUpdate();
+//          if (i == 1){
+//          System.out.println("resutl: " + i);
+
+//          getConn().close();
+            return "成功";
+          }
+//        }
         catch(Exception e){
-        	System.out.println("sql失败");
+        	System.out.println("sql失败"+SQL);
         }
+        return "失败";
     }
     /* 
      * 关闭数据库连接，注意关闭的顺序 

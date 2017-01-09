@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 
 public class GetAcfun {
 
-	static int acID;
+	static String acID;
 	static String upTime;
 	static String banana;
 	static String title;
@@ -24,17 +24,17 @@ public class GetAcfun {
 	
 	
 	public String put(int ac) throws Exception{
-		acID = ac;
-		getAction(acID);
+//		acID = ac;
+		getAction(ac);
 		String sql ="'"+acID+"','"+upTime+"','"+banana+"','"+title+"','"+content+"','"+username+"','"+userid+"','"+viewCount+"','"+collect+"','"+comment+"','"+channelID+"'";
 		
 		return sql;
 	}
 
-	public static boolean getAction(int acID) throws Exception{
+	public static boolean getAction(int ac) throws Exception{
 //		acID=3372389;
 		try{
-			document = Jsoup.connect("http://www.acfun.cn/v/ac"+acID)
+			document = Jsoup.connect("http://www.acfun.cn/v/ac"+ac)
 					  .data("query", "Java")
 					  .userAgent("Android FireFox/29")
 					  .cookie("auth", "token")
@@ -52,7 +52,7 @@ public class GetAcfun {
 				Elements getBanana = document.getElementsByAttributeValue("class", "sp4");//搜索香蕉数量相关元素
 				banana =getBanana.get(3).html();	//getBanana第四行为香蕉数量,get(3)为数组第四个
 		//通过元素属性确定大部分数据
-//				acID = pageInfo.attr("data-aid");
+				acID = pageInfo.attr("data-aid");
 				title = pageInfo.attr("data-title");			
 				content = pageInfo.attr("data-desc");		
 				username = pageInfo.attr("data-name");
@@ -73,7 +73,7 @@ public class GetAcfun {
 				return true;
 			}
 			catch(Exception e){
-//				acID = 1;
+				acID = ac+"";
 				title = "1";			
 				content = "1";		
 				username = "1";
@@ -90,7 +90,7 @@ public class GetAcfun {
 
 		}
 		catch(Exception e){
-//			acID = 1;
+			acID = ac+"";
 			title = "1";			
 			content = "1";		
 			username = "1";
